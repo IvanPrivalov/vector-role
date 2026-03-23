@@ -1,38 +1,36 @@
-Role Name
-=========
+# Vector Role
 
-A brief description of the role goes here.
+Устанавливает и настраивает Vector.
 
-Requirements
-------------
+## Описание
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Роль выполняет установку Vector из официального архива, настраивает конфигурационный файл и systemd‑сервис.
 
-Role Variables
---------------
+## Требования
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+- Ansible >= 2.16
+- Поддерживаемые ОС: Ubuntu 22.04, Debian 11
 
-Dependencies
-------------
+## Переменные роли
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+Все переменные задаются в `defaults/main.yml` и могут быть переопределены.
 
-Example Playbook
-----------------
+| Переменная | Значение по умолчанию | Описание |
+|---|---|---|
+| `vector_version` | `0.38.0` | Версия Vector |
+| `vector_install_dir` | `/opt/vector` | Каталог установки |
+| `vector_config_dir` | `/etc/vector` | Каталог конфига |
+| `vector_archive` | `vector-{{ vector_version }}-x86_64-unknown-linux-gnu.tar.gz` | Имя архива |
+| `vector_download_url` | `https://packages.timber.io/vector/{{ vector_version }}/{{ vector_archive }}` | URL архива |
+| `vector_extract_dir` | `{{ vector_install_dir }}/vector-{{ vector_version }}-x86_64-unknown-linux-gnu` | Каталог распаковки |
+| `vector_symlink_path` | `/usr/bin/vector` | Путь к бинарнику |
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+## Использование
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+```yaml
+- name: Install Vector
+  hosts: vector
+  become: true
+  roles:
+    - vector-role
+```
